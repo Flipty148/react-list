@@ -1,7 +1,6 @@
 import { Film } from "../types";
 import { Card, CardContent, Typography, Box } from '@mui/material'
 import DeleteFilm from "./DeleteFilm";
-import useSetFilms from "../hooks/useSetFilms";
 import React from "react";
 import EditFilm from "./EditFilm";
 

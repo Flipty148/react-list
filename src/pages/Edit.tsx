@@ -64,8 +64,8 @@ export default function Edit({film}:Props) {
                     mt: 2
                 }}
                 >
-                    <TextField label='Оригинальное название' variant='outlined' name='original-name' inputRef={originalNameRef} defaultValue={film.original_name}/>
                     <TextField label='Русское название' variant='outlined' name='russian-name' inputRef={russianNameRef} defaultValue={film.russian_name}/>
+                    <TextField label='Оригинальное название' variant='outlined' name='original-name' inputRef={originalNameRef} defaultValue={film.original_name}/>
                     <TextField label='Год' variant='outlined' name='year' inputRef={yearRef} type='number' defaultValue={film.year}/>
                     <TextField label='Актеры' variant='outlined' name='actors' inputRef={actorsRef} defaultValue={film.actors}/>
                     <Box sx={{display: 'flex', gap: 2}}>

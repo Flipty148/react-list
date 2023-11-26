@@ -51,8 +51,8 @@ export default function AddFilm() {
                 gap: 2,
                 mt: 2
             }}>
-                <TextField label='Оригинальное название' variant='outlined' name='original-name' inputRef={originalNameRef} />
                 <TextField label='Русское название' variant='outlined' name='russian-name' inputRef={russianNameRef} />
+                <TextField label='Оригинальное название' variant='outlined' name='original-name' inputRef={originalNameRef} />
                 <TextField label='Год' variant='outlined' name='year' inputRef={yearRef} type='number'/>
                 <TextField label='Актеры' variant='outlined' name='actors' inputRef={actorsRef} />
                 <Button type='submit' variant='contained'>Добавить</Button>
