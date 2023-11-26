@@ -2,7 +2,7 @@ import {Container, Stack, Typography, ThemeProvider, createTheme} from '@mui/mat
 import { Film } from '../types';
 import FilmComponent from './FilmComponent';
 import {TextField} from "@mui/material";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 type Props = {
     films: Film[];
@@ -16,8 +16,16 @@ const darkTheme = createTheme({
 
 export default function FilmList({films}: Props) {
     const [filter, setFilter] = useState('');
-    const filterFilms = films.filter((film) => film.russian_name.toLowerCase().includes(filter.toLowerCase())
-                                    || film.original_name.toLowerCase().includes(filter.toLowerCase()));
+    const [debouncedFilter, setDebouncedFilter] = useState('');
+    const filterFilms = films.filter((film) => film.russian_name.toLowerCase().includes(debouncedFilter.toLowerCase())
+                                    || film.original_name.toLowerCase().includes(debouncedFilter.toLowerCase()));
+
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            setDebouncedFilter(filter);
+        }, 500);
+        return () => clearTimeout(timeoutId);
+    }, [filter])
     return (
         <ThemeProvider theme={darkTheme}>
             <Container maxWidth={'sm'} sx={{mt: 2, width:'1200px'}}>
