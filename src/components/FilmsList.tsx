@@ -3,6 +3,7 @@ import { Film } from '../types';
 import FilmComponent from './FilmComponent';
 import {TextField} from "@mui/material";
 import { useEffect, useState } from 'react';
+import { ScrollButton } from './ScrollButton';
 
 type Props = {
     films: Film[];
@@ -38,6 +39,7 @@ export default function FilmList({films}: Props) {
                     ))}
                 </Stack>
             </Container>
+            <ScrollButton />
         </ThemeProvider>
     )
 }
