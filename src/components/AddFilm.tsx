@@ -34,7 +34,7 @@ export default function AddFilm() {
 
                     setFilms?.((prevFilms) => {
                         const res = [{
-                            id: prevFilms.length + 1,
+                            id: Math.max(...prevFilms.map(f => f.id)) + 1,
                             original_name: originalName,
                             russian_name: russianName,
                             year: year,
