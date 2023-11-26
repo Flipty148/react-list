@@ -15,7 +15,7 @@ const darkTheme = createTheme({
 export default function FilmList({films}: Props) {
     return (
         <ThemeProvider theme={darkTheme}>
-            <Container maxWidth={'sm'}>
+            <Container maxWidth={'sm'} sx={{mt: 2}}>
                 <Typography variant="h5" component={'h3'} sx={{mb:2}}>Список фильмов</Typography>
                 <Stack spacing={2}>
                     {films.map((film) => (
