@@ -1,23 +1,32 @@
 import './App.css'
-import {BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
+import { createRoot } from 'react-dom/client';
 import Home from './pages/Home';
 import Edit from './pages/Edit';
+import { NotFound } from './pages/NotFound';
 import { Film } from './types';
 
+const domNode = document.getElementById('root')
+if (!domNode) throw new Error('Root element not found');
+const root = createRoot(domNode);
+
 function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/edit/:id" element={function() {
-            const film = getFilmById(Number(window.location.pathname.split('/')[2]))
-            if (!film) return (<Navigate to="/" />)
-            else return (<Edit film={film} />)}()
-        } />
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
-    </BrowserRouter>
-  )
+    return router();
+}
+
+window.addEventListener('hashchange', () => root.render(<App />));
+
+function router() {
+    const hash = window.location.hash
+    if (hash === '') 
+        return (<Home />)
+    else if (/^#\/film\/\d+\/edit/.test(hash)) {
+        const match = hash.match(/^#\/film\/(\d+)\/edit/);
+        const id = match ? match[1] : null;
+        const film = getFilmById(Number(id));
+        if (!film) return (<NotFound />)
+        else return (<Edit film={film} />)
+    }
+    else return (<NotFound />)
 }
 
 function getFilmById(id: number) {

@@ -10,7 +10,7 @@ export default function EditFilm({film}:Props) {
     return (
         <Box sx={{mt:'auto', mb:'auto'}}>
             <IconButton sx={{color: 'blue'}} onClick={() => {
-                window.location.href = `/edit/${film.id}`
+                window.location.hash = `#/film/${film.id}/edit`
             }}>
                 <EditIcon />
             </IconButton>

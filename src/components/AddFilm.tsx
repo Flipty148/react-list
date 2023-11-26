@@ -16,7 +16,7 @@ export default function AddFilm() {
     const actorsRef = useRef<HTMLInputElement>(null);
     return (
     <ThemeProvider theme={darkTheme}>
-        <Container>
+        <Container maxWidth={'sm'}>
             <Typography variant='h5' component={'h5'}>Добавить фильм</Typography>
             <Box component={'form'}
             onSubmit={e => {
