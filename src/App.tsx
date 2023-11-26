@@ -1,40 +1,30 @@
-import { useState, useEffect } from 'react'
 import './App.css'
-import {Film} from './types'
-import SetFilmsContext from './context/setFilmsContext'
-import FilmList from './components/FilmsList'
-import AddFilm from './components/AddFilm'
+import {BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
+import Home from './pages/Home';
+import Edit from './pages/Edit';
+import { Film } from './types';
 
 function App() {
-  const [films, setFilms] = useState<Film[]>([])
-  useEffect(() => {
-    const f = localStorage.getItem('films');
-    if (f) {
-        setFilms(JSON.parse(f))
-    }
-    else {
-        fetch('/src/src/film.json')
-        .then((resposne) => {
-            if (resposne.ok) return resposne.json();
-            throw new Error('Request failed.');
-        })
-        .then((json) => {
-            json.forEach((film: Film, index: number) => {
-                film.id = index;
-            });
-            setFilms(json)
-            localStorage.setItem('films', JSON.stringify(json))
-        })
-        .catch((error) => console.log(error)); 
-    }
-  }, [])
-
   return (
-    <SetFilmsContext.Provider value={setFilms}>
-        <AddFilm />
-        <FilmList films={films} />
-    </SetFilmsContext.Provider>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/edit/:id" element={function() {
+            const film = getFilmById(Number(window.location.pathname.split('/')[2]))
+            if (!film) return (<Navigate to="/" />)
+            else return (<Edit film={film} />)}()
+        } />
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
+    </BrowserRouter>
   )
+}
+
+function getFilmById(id: number) {
+    const films = localStorage.getItem('films')
+    if (!films) return null
+    const json = JSON.parse(films)
+    return json.find((film:Film) => film.id === id)
 }
 
 export default App

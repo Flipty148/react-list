@@ -3,6 +3,7 @@ import { Card, CardContent, Typography, Box } from '@mui/material'
 import DeleteFilm from "./DeleteFilm";
 import useSetFilms from "../hooks/useSetFilms";
 import React from "react";
+import EditFilm from "./EditFilm";
 
 type Props = {
     film : Film;
@@ -22,7 +23,10 @@ function FilmComponentBase({film} : Props) {
                     <Typography sx={{textAlign:'start', fontSize:12}} component='p' color='text.secondary'><span style={{fontWeight:'bold'}}>Год выхода: </span>{film.year}</Typography>
                     <Typography sx={{textAlign:'start', fontSize:12}} component='p' color='text.secondary'><span style={{fontWeight:'bold'}}>Актеры: </span>{film.actors}</Typography>
                 </CardContent>
-                <DeleteFilm film={film} />
+                <Box sx={{display:'flex', flexDirection:'column', ml:'auto'}}>
+                    <DeleteFilm film={film} />
+                    <EditFilm film={film} />
+                </Box>
             </Box>
         </Card>
     );

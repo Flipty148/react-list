@@ -27,7 +27,7 @@ export default function DeleteFilm({film}:Props) {
     const setFilms = useSetFilms();
 
     return (
-        <Box sx={{ml:'auto', mt:'auto', mb:'auto'}}>
+        <Box sx={{mt:'auto', mb:'auto'}}>
             <IconButton sx={{color: 'red'}} onClick={handleOpen}>
                 <DeleteIcon />
             </IconButton>
