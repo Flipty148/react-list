@@ -33,7 +33,7 @@ export default function FilmList({films}: Props) {
                 <TextField label="Поиск" variant="outlined" sx={{mb: 2, width:'100%'}}
                 onChange={(e) => setFilter(e.target.value)}/>
                 <Stack spacing={2}>
-                    {filterFilms.map((film) => (
+                    {filterFilms.length === 0 ? <Typography>Ничего не найдено</Typography> : filterFilms.map((film) => (
                         <FilmComponent key={film.id} film={film} />
                     ))}
                 </Stack>
