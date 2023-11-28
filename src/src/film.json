@@ -1,4 +1,4 @@
-[{
+{"films": [{
    "original_name": "The Lion King",
    "russian_name": "Король лев",
    "year": "1994",
@@ -484,4 +484,4 @@
    "original_name": "Солярис",
    "actors": "Наталья Бондарчук, Донатас Банионис"
 }
-]
+]}

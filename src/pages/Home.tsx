@@ -12,7 +12,7 @@ export default function Home(){
             setFilms(JSON.parse(f))
         }
         else {
-            fetch('/src/src/film.json')
+            fetch('http://localhost:3000/films')
             .then((resposne) => {
                 if (resposne.ok) return resposne.json();
                 throw new Error('Request failed.');
