@@ -27,15 +27,15 @@ export default function Login() {
             }
 
     }
-    
-    return (
-        <Container sx={{maxWidth:'sm', mt: 2, width:'1200px'}}>
-            <Typography variant='h5' component={'h5'} sx={{mb:2}}>Вход</Typography>
-            <Box component={"form"}  method="POST" onSubmit={handleSubmit}>
-                <TextField label="Почта" variant="outlined" sx={{mb: 2, width:'100%'}} name="email" onChange={(e)=> setEmail(e.target.value)}/>
-                <TextField label="Пароль" variant="outlined" sx={{mb: 2, width:'100%'}} name="password" onChange={(e)=> setPassword(e.target.value)}/>
-                <Button variant="contained" type="submit" sx={{mb: 2, width:'100%'}}>Войти</Button>
-            </Box>
-        </Container>
-    )
+
+        return (
+            <Container sx={{maxWidth:'sm', mt: 2, width:'1200px'}}>
+                <Typography variant='h5' component={'h5'} sx={{mb:2}}>Вход</Typography>
+                <Box component={"form"}  method="POST" onSubmit={handleSubmit}>
+                    <TextField label="Почта" variant="outlined" sx={{mb: 2, width:'100%'}} name="email" onChange={(e)=> setEmail(e.target.value)}/>
+                    <TextField label="Пароль" variant="outlined" sx={{mb: 2, width:'100%'}} name="password" onChange={(e)=> setPassword(e.target.value)}/>
+                    <Button variant="contained" type="submit" sx={{mb: 2, width:'100%'}}>Войти</Button>
+                </Box>
+            </Container>
+        )
 }

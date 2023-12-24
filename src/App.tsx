@@ -7,6 +7,7 @@ import { NotFound } from './pages/NotFound';
 import { Film } from './types';
 import NavBar from './components/NavBar';
 import { Box, createTheme, ThemeProvider } from '@mui/material';
+import { isLogin } from './helpers/isLogin.ts';
 
 
 //---------- Визуал ----------
@@ -32,6 +33,7 @@ function App() {
 window.addEventListener('hashchange', () => root.render(<App />));
 
 function Router() {
+    const isAuth = isLogin();
     const location = window.location;
     if (location.pathname === '/')
     {
@@ -47,7 +49,8 @@ function Router() {
         }
         else return (<NotFound />)
     }
-    if (location.pathname === '/users/login') return (<Login />)
+    if (location.pathname === '/users/login' && !isAuth) return (<Login />)
+    else {history.pushState(null, null, '/'); return (<Home />)}
     return (<NotFound />)
 }
 
