@@ -35,7 +35,7 @@ usersRouter.get('/', verifyToken, isAdmin, async (req, res) => {
 });
 
 usersRouter.get('/:id', verifyToken, isSelf, async (req, res) => {
-    const id = await uuidSchema.parseAsync(req.params);
+    const id = await uuidSchema.parseAsync(req.params.id);
     const user = await db.user.findUnique({
         where: {id},
         select: {
@@ -100,6 +100,8 @@ usersRouter.delete('/:id', verifyToken, isSelf, async (req, res) => {
 });
 
 usersRouter.post('/login', async (req, res) => {
+    console.log(req.body);
+    
     const {email, password} = await credentialsSchema.parseAsync(req.body);
    
     const user = await db.user.findUnique({

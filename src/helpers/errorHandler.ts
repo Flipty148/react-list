@@ -3,16 +3,19 @@ import {ErrorRequestHandler} from 'express';
 import {HttpError} from 'http-error';
 import {ZodError} from 'zod';
 
-const errorHandler: ErrorRequestHandler = (err, req, res, _next) => {
-    console.log(err);
+const errorHandler: ErrorRequestHandler = (err, req, res, _next) => {    
     if (err instanceof ZodError) {
+        console.log("zod");
+        
         return res.status(400).json({message: err.message});
     }
     if (err instanceof HttpError) {
+        console.log("http");
         return res.status(err.status).json({message: err.message});
     }
     if (err instanceof Prisma.PrismaClientKnownRequestError) {
         if (err.code === 'P2002') {
+            console.log("prisma");
             return res.status(400).json({
                 message: `This ${
                     Array.isArray(err.meta?.target) ? err.meta?.target.join(', ') : 'field'

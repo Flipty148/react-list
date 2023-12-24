@@ -1,6 +1,7 @@
-import { app } from '../app'
+import { app } from '../app_express'
+// import ViteExpress from 'vite-express'
 
-const port = process.env.PORT || 3000
+const port = Number(process.env.PORT) || 3000
 
 app.listen(port, () => {
   console.log(
@@ -8,3 +9,5 @@ app.listen(port, () => {
     'Server is running at http://localhost:' + port,
   )
 })
+
+// ViteExpress.listen(app, port)

@@ -1,7 +1,8 @@
 import './App.css'
-import { createRoot } from 'react-dom/client';
+import {root} from './main.tsx'
 import Home from './pages/Home';
 import Edit from './pages/Edit';
+import Login from './pages/Login';
 import { NotFound } from './pages/NotFound';
 import { Film } from './types';
 import NavBar from './components/NavBar';
@@ -17,10 +18,6 @@ const darkTheme = createTheme({
   });
 
 
-const domNode = document.getElementById('root')
-if (!domNode) throw new Error('Root element not found');
-const root = createRoot(domNode);
-
 function App() {
     return (
         <ThemeProvider theme={darkTheme}>
@@ -35,17 +32,23 @@ function App() {
 window.addEventListener('hashchange', () => root.render(<App />));
 
 function Router() {
-    const hash = window.location.hash
-    if (hash === '') 
-        return (<Home />)
-    else if (/^#\/film\/\d+\/edit/.test(hash)) {
-        const match = hash.match(/^#\/film\/(\d+)\/edit/);
-        const id = match ? match[1] : null;
-        const film = getFilmById(Number(id));
-        if (!film) return (<NotFound />)
-        else return (<Edit film={film} />)
+    const location = window.location;
+    if (location.pathname === '/')
+    {
+        const hash = window.location.hash;
+        if (hash === '') 
+            return (<Home />)
+        else if (/^#\/film\/\d+\/edit/.test(hash)) {
+            const match = hash.match(/^#\/film\/(\d+)\/edit/);
+            const id = match ? match[1] : null;
+            const film = getFilmById(Number(id));
+            if (!film) return (<NotFound />)
+            else return (<Edit film={film} />)
+        }
+        else return (<NotFound />)
     }
-    else return (<NotFound />)
+    if (location.pathname === '/users/login') return (<Login />)
+    return (<NotFound />)
 }
 
 function getFilmById(id: number) {
