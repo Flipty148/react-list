@@ -117,6 +117,7 @@ usersRouter.post('/login', async (req, res) => {
 
 usersRouter.post('/logout', async (req, res) => {
     res.clearCookie("token");
+    res.clearCookie("id");
     res.sendStatus(200);
 });
 

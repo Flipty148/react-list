@@ -1,9 +1,8 @@
-import { AppBar, Toolbar, Typography, Button } from "@mui/material";
+import { AppBar, Toolbar, Typography, Button, Box } from "@mui/material";
 import { isLogin } from "../helpers/isLogin";
 
 export default function NavBar() {
     const isAuth = isLogin();
-    console.log(isAuth);
     return (
             <AppBar position="sticky">
                 <Toolbar>
@@ -11,7 +10,20 @@ export default function NavBar() {
                         Список фильмов
                     </Typography>
                     {isAuth ? (
-                        <Button color="inherit" href="/users/logout">Выйти</Button>
+                        <Box component={"form"}
+                        onSubmit={(e) => {
+                            e.preventDefault();
+                            fetch("http://localhost:3000/users/logout", {
+                                method: "POST",
+                                credentials: "include",
+                            }).then((resposne) => {
+                                if (resposne.ok) {
+                                    window.location.href = "/";
+                                }
+                            });
+                        }}>
+                            <Button color="inherit" type="submit">Выйти</Button>
+                        </Box>
                     ) : (
                         <Button color="inherit" href="/users/login">Войти</Button>
                     )}
