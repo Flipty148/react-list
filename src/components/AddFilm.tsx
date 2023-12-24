@@ -1,12 +1,7 @@
-import {Box, Button, Container, TextField, Typography, ThemeProvider, createTheme} from '@mui/material'
+import {Box, Button, Container, TextField, Typography} from '@mui/material'
 import useSetFilms from '../hooks/useSetFilms'
 import { useRef } from 'react'
 
-const darkTheme = createTheme({
-    palette: {
-      mode: 'dark',
-    },
-  });
 
 export default function AddFilm() {
     const setFilms = useSetFilms();
@@ -15,7 +10,6 @@ export default function AddFilm() {
     const yearRef = useRef<HTMLInputElement>(null);
     const actorsRef = useRef<HTMLInputElement>(null);
     return (
-    <ThemeProvider theme={darkTheme}>
         <Container maxWidth={'sm'}>
             <Typography variant='h5' component={'h5'}>Добавить фильм</Typography>
             <Box component={'form'}
@@ -58,6 +52,5 @@ export default function AddFilm() {
                 <Button type='submit' variant='contained'>Добавить</Button>
             </Box>
         </Container>
-    </ThemeProvider>
     );
 }

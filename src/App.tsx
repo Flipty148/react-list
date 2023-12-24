@@ -4,9 +4,17 @@ import Home from './pages/Home';
 import Edit from './pages/Edit';
 import { NotFound } from './pages/NotFound';
 import { Film } from './types';
+import NavBar from './components/NavBar';
+import { Box, createTheme, ThemeProvider } from '@mui/material';
 
 
 //---------- Визуал ----------
+
+const darkTheme = createTheme({
+    palette: {
+      mode: 'dark',
+    },
+  });
 
 
 const domNode = document.getElementById('root')
@@ -14,12 +22,19 @@ if (!domNode) throw new Error('Root element not found');
 const root = createRoot(domNode);
 
 function App() {
-    return router();
+    return (
+        <ThemeProvider theme={darkTheme}>
+            <Box sx={{display:'flex', flexDirection:'column', gap:2}}>
+                <NavBar/>
+                <Router />
+            </Box>
+        </ThemeProvider>
+    )
 }
 
 window.addEventListener('hashchange', () => root.render(<App />));
 
-function router() {
+function Router() {
     const hash = window.location.hash
     if (hash === '') 
         return (<Home />)

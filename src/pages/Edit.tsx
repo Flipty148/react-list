@@ -1,4 +1,4 @@
-import { Container, Typography, Box, Button, TextField, createTheme, ThemeProvider } from "@mui/material"
+import { Container, Typography, Box, Button, TextField } from "@mui/material"
 import { Film } from "../types"
 import { useEffect, useRef, useState } from "react";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -6,12 +6,6 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 type Props = {
     film: Film
 }
-
-const darkTheme = createTheme({
-    palette: {
-      mode: 'dark',
-    },
-  });
 
 export default function Edit({film}:Props) {
     const [films, setFilms] = useState<Film[]>([])
@@ -27,7 +21,6 @@ export default function Edit({film}:Props) {
     const yearRef = useRef<HTMLInputElement>(null);
     const actorsRef = useRef<HTMLInputElement>(null);
     return(
-        <ThemeProvider theme={darkTheme}>
             <Container sx={{padding:0}}>
                 <Typography variant='h5' component={'h5'}>Редактирование фильма: "{film.russian_name + ' (' + film.original_name + ')'}"</Typography>
                 <Box component={'form'}
@@ -74,7 +67,6 @@ export default function Edit({film}:Props) {
                     </Box>
                 </Box>
             </Container>
-        </ThemeProvider>
     )
 }
 
