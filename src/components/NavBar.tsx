@@ -1,4 +1,5 @@
 import { AppBar, Toolbar, Typography, Button } from "@mui/material";
+import { isLogin } from "../helpers/isLogin";
 
 export default function NavBar() {
     return (
@@ -7,7 +8,11 @@ export default function NavBar() {
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1, textAlign: "left" }}>
                         Список фильмов
                     </Typography>
-                    <Button color="inherit">Войти</Button>
+                    {isLogin() ? (
+                        <Button color="inherit">Выйти</Button>
+                    ) : (
+                        <Button color="inherit">Войти</Button>
+                    )}
                 </Toolbar>
             </AppBar>
     );
