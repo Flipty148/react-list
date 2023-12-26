@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "dev_listen": "tsx watch ./src/www/index.ts",
+    "json_server" : "json-server --watch ./src/src/film.json --port 3004",
     "build": "tsc && vite build",
     "start": "node ./dist/www/index.js",
     "db:migrate:dev": "prisma migrate dev",
