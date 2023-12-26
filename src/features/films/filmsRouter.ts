@@ -5,6 +5,7 @@ import { verifyToken } from "../../auth";
 import { filmCreateSchema } from "./filmsValidators";
 import { isSelfFilm } from "../../auth";
 import createHttpError from 'http-errors'
+import { Film } from "@prisma/client";
 
 const filmsRouter = Router();
 
@@ -23,21 +24,49 @@ filmsRouter.get('/', verifyToken, async (req, res) => {
 
 filmsRouter.post('/', verifyToken, async (req, res) => {
     const userId = req.body.user?.id;
-    const {original_name, russian_name, year, actors} = await filmCreateSchema.parseAsync(req.body);
-    const film = await db.film.create({
-        data: {
-            original_name,
-            russian_name,
-            year,
-            actors,
-            userId
-        }
-    });
-    res.json(film);
+    if (!userId) throw new createHttpError.Unauthorized();
+    if (Array.isArray(req.body)){
+        let films = [] as Film[];
+        req.body.forEach((f) => {
+        const {original_name, russian_name, year, actors} = filmCreateSchema.parse(f);
+        const yearNumber = Number(year);
+        const film = {
+            original_name: original_name,
+            russian_name: russian_name,
+            year: yearNumber,
+            actors: actors,
+            userId: userId
+        } as Film;
+        films.push(film);
+        });
+        const filmsMany = db.film.createMany({
+            data: films
+        });
+        await db.$transaction([filmsMany]);
+        await db.$disconnect();
+        res.json(films);
+    }
+    else {
+        const {original_name, russian_name, year, actors} = await filmCreateSchema.parseAsync(req.body);
+        const yearNumber = Number(year);
+        const film = db.film.create({
+            data: {
+                original_name: original_name,
+                russian_name: russian_name,
+                year: yearNumber,
+                actors: actors,
+                userId: userId
+            }
+        });
+        await db.$transaction([film]);
+        await db.$disconnect();
+        res.json(film);
+    }
+    
 });
 
 filmsRouter.delete('/:id', verifyToken, isSelfFilm, async(req, res) => {
-    const id = await uuidSchema.parseAsync(req.params);
+    const id = await uuidSchema.parseAsync(req.params.id);
     const film = await db.film.delete({
         where: {id}
     });
@@ -46,14 +75,15 @@ filmsRouter.delete('/:id', verifyToken, isSelfFilm, async(req, res) => {
 });
 
 filmsRouter.patch('/:id', verifyToken, isSelfFilm, async(req, res) => {
-    const id = await uuidSchema.parseAsync(req.params);
+    const id = await uuidSchema.parseAsync(req.params.id);
     const {original_name, russian_name, year, actors} = await filmCreateSchema.parseAsync(req.body);
+    const yearNumber = Number(year);
     const film = await db.film.update({
         where: {id},
         data: {
             original_name,
             russian_name,
-            year,
+            year: yearNumber,
             actors
         }
     });
@@ -62,7 +92,7 @@ filmsRouter.patch('/:id', verifyToken, isSelfFilm, async(req, res) => {
 });
 
 filmsRouter.get('/:id', verifyToken, isSelfFilm, async(req, res) => {
-    const id = await uuidSchema.parseAsync(req.params);
+    const id = await uuidSchema.parseAsync(req.params.id);
     const film = await db.film.findUnique({
         where: {id}
     });

@@ -38,8 +38,14 @@ export default function DeleteFilm({film}:Props) {
                         <Button variant='contained' color='error' onClick={
                             e => {
                                 e.preventDefault();
-                                localStorage.setItem('films', JSON.stringify(JSON.parse(localStorage.getItem('films') as string).filter((f:Film) => f.id !== film.id)));
-                                setFilms?.((prevFilms) => prevFilms.filter((f:Film) => f.id !== film.id));
+                                // localStorage.setItem('films', JSON.stringify(JSON.parse(localStorage.getItem('films') as string).filter((f:Film) => f.id !== film.id)));
+                                // setFilms?.((prevFilms) => prevFilms.filter((f:Film) => f.id !== film.id));
+                                fetch(`http://localhost:3000/films/${film.id}`, {
+                                    method: 'DELETE',
+                                    credentials: 'include',
+                                })
+                                .then((resposne) => {if (resposne.ok) setFilms?.((prevFilms) => prevFilms.filter((f:Film) => f.id !== film.id))})
+
                                 handleClose();
                             }
                         }>Да</Button>

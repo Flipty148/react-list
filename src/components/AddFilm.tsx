@@ -26,17 +26,45 @@ export default function AddFilm() {
                     if (yearRef.current) yearRef.current.value = '';
                     if (actorsRef.current) actorsRef.current.value = '';
 
-                    setFilms?.((prevFilms) => {
-                        const res = [{
-                            id: Math.max(...prevFilms.map(f => f.id)) + 1,
+                    // setFilms?.((prevFilms) => {
+                    //     const res = [{
+                    //         id: Math.max(...prevFilms.map(f => f.id)) + 1,
+                    //         original_name: originalName,
+                    //         russian_name: russianName,
+                    //         year: year,
+                    //         actors: actors
+                    //     }, ...prevFilms];
+                    //     localStorage.setItem('films', JSON.stringify(res));
+                    //     return res;
+                    // })
+                    fetch('http://localhost:3000/films', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
                             original_name: originalName,
                             russian_name: russianName,
                             year: year,
                             actors: actors
-                        }, ...prevFilms];
-                        localStorage.setItem('films', JSON.stringify(res));
-                        return res;
+                        }),
+                        credentials: 'include',
                     })
+                    .then((resposne) => {
+                        if (resposne.ok) {
+                            setFilms?.((prevFilms) => {
+                                const res = [{
+                                    id: Math.max(...prevFilms.map(f => f.id)) + 1,
+                                    original_name: originalName,
+                                    russian_name: russianName,
+                                    year: year,
+                                    actors: actors
+                                }, ...prevFilms];
+                                return res;
+                            })
+                        }
+                    })
+                    .catch((error) => console.log(error));
                 }
             }}
             sx={{

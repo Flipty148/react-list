@@ -8,13 +8,19 @@ type Props = {
 }
 
 export default function Edit({film}:Props) {
-    const [films, setFilms] = useState<Film[]>([])
+    const [films, setFilms] = useState<Film>()
     useEffect(() => {
-        const f = localStorage.getItem('films');
-        if (f) {
-            setFilms(JSON.parse(f))
-        }
-    }, [])
+        // const f = localStorage.getItem('films');
+        // if (f) {
+        //     setFilms(JSON.parse(f))
+        // }
+        fetch(`http://localhost:3000/films/${film.id}`, {
+            method: 'GET',
+            credentials: 'include',
+        })
+        .then((resposne) => resposne.json())
+        .then((films) => setFilms(films))
+    }, [film.id])
 
     const originalNameRef = useRef<HTMLInputElement>(null);
     const russianNameRef = useRef<HTMLInputElement>(null);
@@ -32,23 +38,41 @@ export default function Edit({film}:Props) {
                     const year = formData.get('year') as unknown as number;
                     const actors = formData.get('actors') as string;
                     if (originalName && russianName && year && actors) {
-                        setFilms?.((prevFilms) => {
-                            const res = prevFilms.map(f => {
-                                if (f.id === film.id) {
-                                    return {
-                                        id: film.id,
-                                        original_name: originalName,
-                                        russian_name: russianName,
-                                        year: year,
-                                        actors: actors
-                                    }
-                                }
-                                return f;
-                            });
-                            localStorage.setItem('films', JSON.stringify(res));
-                            window.location.href = '/';
-                            return res;
-                        });
+                        // setFilms?.((prevFilms) => {
+                        //     const res = prevFilms.map(f => {
+                        //         if (f.id === film.id) {
+                        //             return {
+                        //                 id: film.id,
+                        //                 original_name: originalName,
+                        //                 russian_name: russianName,
+                        //                 year: year,
+                        //                 actors: actors
+                        //             }
+                        //         }
+                        //         return f;
+                        //     });
+                        //     localStorage.setItem('films', JSON.stringify(res));
+                        //     window.location.href = '/';
+                        //     return res;
+                        // });
+                        fetch(`http://localhost:3000/films/${film.id}`, {
+                            method: 'PATCH',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                original_name: originalName,
+                                russian_name: russianName,
+                                year: year,
+                                actors: actors
+                            }),
+                            credentials: 'include',
+                        })
+                        .then((resposne) => {
+                            if (resposne.ok) {
+                                window.location.href = '/';
+                            }
+                        })
                 }}}
                 sx={{
                     display: 'flex',
