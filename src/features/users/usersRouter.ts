@@ -55,7 +55,7 @@ usersRouter.post('/', verifyToken, isAdmin, async (req, res) => {
         data: {
             email,
             password: await createPasswordHash(password),
-            name,
+            name: name as string,
             role
         },
         select: {
@@ -69,7 +69,7 @@ usersRouter.post('/', verifyToken, isAdmin, async (req, res) => {
 });
 
 usersRouter.patch('/:id', verifyToken, isSelf, async (req, res) => {
-    const id = await uuidSchema.parseAsync(req.params);
+    const id = await uuidSchema.parseAsync(req.params.id);
     const {email, password, role, name} = await userUpdateSchema.parseAsync(req.body);
     const updatedData: Prisma.UserUpdateInput = {};
     if (email) updatedData.email = email;
@@ -91,7 +91,7 @@ usersRouter.patch('/:id', verifyToken, isSelf, async (req, res) => {
 });
 
 usersRouter.delete('/:id', verifyToken, isSelf, async (req, res) => {
-    const id = await uuidSchema.parseAsync(req.params);
+    const id = await uuidSchema.parseAsync(req.params.id);
     const user = await db.user.delete({
         where: {id}
     });
@@ -115,7 +115,7 @@ usersRouter.post('/login', async (req, res) => {
     });
 });
 
-usersRouter.post('/logout', async (req, res) => {
+usersRouter.post('/logout', async (_req, res) => {
     res.clearCookie("token");
     res.clearCookie("id");
     res.sendStatus(200);
@@ -127,7 +127,7 @@ usersRouter.post('/signup', async (req, res) => {
         data: {
             email,
             password: await createPasswordHash(password),
-        }
+        } as any
     });
     setToken(res, {
         id: user.id,

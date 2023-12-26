@@ -1,0 +1,10 @@
+{
+  "extends": "../tsconfig.base.json",
+    "compilerOptions": {
+      "baseUrl": ".",
+      
+    },
+    "include": [
+      "./**/*.ts", // Include all TypeScript files in '__tests__' directory
+    ]
+}

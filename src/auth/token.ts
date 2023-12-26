@@ -1,11 +1,11 @@
 import { NextFunction, Response } from "express";
 import createHttpError from "http-errors";
 import { RequestUser } from "../helpers/types";
-import jwt, {jwtVerify} from "./jwt";
+import jwt from "./jwt";
 
 export async function verifyToken(
     req: RequestUser,
-    res: Response,
+    _res: Response,
     next: NextFunction
 ) {
     const token = req.cookies?.token;
@@ -38,7 +38,7 @@ export function createToken(
 }
 
 export function deleteToken(
-    req: RequestUser,
+    _req: RequestUser,
     res: Response
 ) {
     res.clearCookie("token");
@@ -48,7 +48,7 @@ export function deleteToken(
 
 export function setToken(
     res: Response,
-    data: object
+    data: any
 ) {
     const token = createToken(data);
     res.cookie("token", `Bearer ${token}`, {

@@ -1,9 +1,9 @@
 import {Prisma } from '@prisma/client';
 import {ErrorRequestHandler} from 'express';
-import {HttpError} from 'http-error';
+import {HttpError} from 'http-errors';
 import {ZodError} from 'zod';
 
-const errorHandler: ErrorRequestHandler = (err, req, res, _next) => {    
+const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {    
     if (err instanceof ZodError) {
         console.log("zod");
         
@@ -16,7 +16,7 @@ const errorHandler: ErrorRequestHandler = (err, req, res, _next) => {
     if (err instanceof Prisma.PrismaClientKnownRequestError) {
         if (err.code === 'P2002') {
             console.log("prisma");
-            return res.status(400).json({
+            return res.status(409).json({
                 message: `This ${
                     Array.isArray(err.meta?.target) ? err.meta?.target.join(', ') : 'field'
                 } is already taken`,
