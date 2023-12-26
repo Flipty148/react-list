@@ -61,5 +61,14 @@ filmsRouter.patch('/:id', verifyToken, isSelfFilm, async(req, res) => {
     res.json(film);
 });
 
+filmsRouter.get('/:id', verifyToken, isSelfFilm, async(req, res) => {
+    const id = await uuidSchema.parseAsync(req.params);
+    const film = await db.film.findUnique({
+        where: {id}
+    });
+    if (!film) throw new createHttpError.NotFound();
+    res.json(film);
+});
+
 
 export default filmsRouter;
