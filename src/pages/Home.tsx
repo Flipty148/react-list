@@ -3,6 +3,8 @@ import AddFilm from "../components/AddFilm";
 import FilmList from "../components/FilmsList";
 import SetFilmsContext from "../context/setFilmsContext";
 import { Film } from "../types";
+import { isLogin } from "../helpers/isLogin";
+import { Typography } from "@mui/material";
 
 export default function Home(){
     const [films, setFilms] = useState<Film[]>([])
@@ -50,10 +52,19 @@ export default function Home(){
         })
         .catch((error) => console.log(error));
     }, []);
+
+    const isAuth = isLogin();
+
+    if (isAuth)
     return (
         <SetFilmsContext.Provider value={setFilms}>
             <AddFilm />
             <FilmList films={films} />
+        </SetFilmsContext.Provider>
+    )
+    else return (
+        <SetFilmsContext.Provider value={setFilms}>
+            <Typography variant='h5' component={'h5'}>Вы не авторизованы</Typography>
         </SetFilmsContext.Provider>
     )
 }
