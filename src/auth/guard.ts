@@ -27,3 +27,23 @@ export function isAdmin(
     }
     next()
 }
+
+export async function isSelfFilm(
+    req: RequestUser,
+    res: Response,
+    next: NextFunction
+) {
+    if (req.body.user.role === 'ADMIN') {
+        return next();
+    }
+    const id = await uuidSchema.parseAsync(req.params.id)
+    const userId = req.body.user?.id
+    const film = await db.film.findMany({
+        where: {
+            id,
+            userId
+        }
+    })
+    if (film) return next();
+    throw new createHttpError.Forbidden();
+}
