@@ -63,21 +63,24 @@ export async function seedTest() {
                 original_name: 'film1',
                 russian_name: 'фильм1',
                 year: 1970,
-                actors: 'актер1, актер2'
+                actors: 'актер1, актер2',
+                userId: userIdsTest[1]
             },
             {
                 id: filmIdsTest[1],
                 original_name: 'film2',
                 russian_name: 'фильм2',
                 year: 2012,
-                actors: 'актер3'
+                actors: 'актер3',
+                userId: userIdsTest[2]
             },
             {
                 id: filmIdsTest[2],
                 original_name: 'film3',
                 russian_name: 'фильм3',
                 year: 2023,
-                actors: 'актер4, актер5, актер6'
+                actors: 'актер4, актер5, актер6',
+                userId: userIdsTest[1]
             }
     ]});
 
@@ -87,6 +90,7 @@ export async function seedTest() {
 
 export async function clear() {
     const deleteUsers = db.user.deleteMany();
-    await db.$transaction([deleteUsers]);
+    const deleteFilms = db.film.deleteMany();
+    await db.$transaction([deleteUsers, deleteFilms]);
     await db.$disconnect();
 }

@@ -44,6 +44,6 @@ export async function isSelfFilm(
             userId
         }
     })
-    if (film) return next();
+    if (film.length > 0) return next();
     throw new createHttpError.Forbidden();
 }

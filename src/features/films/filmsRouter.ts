@@ -49,18 +49,19 @@ filmsRouter.post('/', verifyToken, async (req, res) => {
     else {
         const {original_name, russian_name, year, actors} = await filmCreateSchema.parseAsync(req.body);
         const yearNumber = Number(year);
+        const appendData = {
+            original_name: original_name,
+            russian_name: russian_name,
+            year: yearNumber,
+            actors: actors,
+            userId: userId
+        }
         const film = db.film.create({
-            data: {
-                original_name: original_name,
-                russian_name: russian_name,
-                year: yearNumber,
-                actors: actors,
-                userId: userId
-            }
+            data: appendData
         });
         await db.$transaction([film]);
         await db.$disconnect();
-        res.json(film);
+        res.json(appendData);
     }
     
 });
